@@ -43,4 +43,28 @@ class ApiTokenController extends Controller
             "created_at" => $user->created_at
         ], 200);
     }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                "error" => "he provided credentials are incorrect."
+            ], 401);
+        }
+
+        $user->tokens()->where('tokenable_id',  $user->id)->delete();
+
+        $token = $user->createToken("kodiweb")->plainTextToken;
+
+        return response()->json([
+            "token" => $token
+        ], 200);
+    }
 }
