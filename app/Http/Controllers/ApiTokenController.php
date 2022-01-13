@@ -65,7 +65,22 @@ class ApiTokenController extends Controller
         $token = $user->createToken("kodiweb")->plainTextToken;
 
         return response()->json([
-            "token" => $token
+            "token" => $token,
+            "first_name" => $user->first_name,
+            "last_name" => $user->last_name,
+            "email" => $user->email,
+            "created_at" => $user->created_at
+        ], 200);
+    }
+
+    public function me(Request $request)
+    {
+        return response()->json([
+            "first_name" => $request->user()->first_name,
+            "last_name" => $request->user()->last_name,
+            "email" => $request->user()->email,
+            "created_at" => $request->user()->created_at,
+            "updated_at" => $request->user()->updated_at,
         ], 200);
     }
 
@@ -106,5 +121,11 @@ class ApiTokenController extends Controller
             'user' => $user,
             "message" => "Profil mis à jour"
         ], 200);
+    }
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(null, 204);
     }
 }
