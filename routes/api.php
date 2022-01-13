@@ -21,3 +21,4 @@ use App\Http\Controllers\ApiTokenController;
 
 Route::post('auth/register', [ApiTokenController::class, 'register']);
 Route::post('auth/login', [ApiTokenController::class, 'login']);
+Route::middleware('auth:sanctum')->put('auth/update/{id}', [ApiTokenController::class, 'update']);

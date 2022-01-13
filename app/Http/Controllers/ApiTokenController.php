@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Http\Requests\UserEditRequest;
 
 
 class ApiTokenController extends Controller
@@ -65,6 +66,45 @@ class ApiTokenController extends Controller
 
         return response()->json([
             "token" => $token
+        ], 200);
+    }
+
+    public function update($id, UserEditRequest $request)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
+        if ($user->id != $request->user()->id) {
+            return response()->json(["message" => 'Forbidden'], 403);
+        }
+
+        $user->email = $request->get('email');
+        $user->first_name = $request->get('first_name');
+        $user->last_name = $request->get('last_name');
+        $user->biography = $request->get('biography');
+
+        if ($request->has('img')) {
+            $result = $request->img->storeOnCloudinary();
+            cloudinary()->destroy($user->img_id);
+            $user->img_id = $result->getPublicId();
+            $user->img_url = $result->getSecurePath();
+        }
+
+        $user->fill($request->all());
+        $user->save();
+
+        if (strlen($request->get('password', '')) > 0) {
+            $user->password = Hash::make($request->get('password'));
+        }
+
+        $user->save();
+
+        return response()->json([
+            'user' => $user,
+            "message" => "Profil mis à jour"
         ], 200);
     }
 }
