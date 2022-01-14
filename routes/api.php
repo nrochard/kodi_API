@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiTokenController;
+use App\Http\Controllers\PostsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,6 +22,9 @@ use App\Http\Controllers\ApiTokenController;
 
 Route::post('auth/register', [ApiTokenController::class, 'register']);
 Route::post('auth/login', [ApiTokenController::class, 'login']);
-Route::middleware('auth:sanctum')->put('auth/update/{id}', [ApiTokenController::class, 'update']);
+
+Route::middleware('auth:sanctum')->post('auth/post', [PostsController::class, 'create']);
+
+Route::middleware('auth:sanctum')->post('auth/update/{id}', [ApiTokenController::class, 'update']);
 Route::middleware('auth:sanctum')->post('auth/me', [ApiTokenController::class, 'me']);
 Route::middleware('auth:sanctum')->post('auth/logout', [ApiTokenController::class, 'logout']);

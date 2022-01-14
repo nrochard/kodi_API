@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\UserEditRequest;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 
 class ApiTokenController extends Controller
@@ -84,7 +85,7 @@ class ApiTokenController extends Controller
         ], 200);
     }
 
-    public function update($id, UserEditRequest $request)
+    public function update($id, Request $request)
     {
         $user = User::find($id);
 
@@ -102,14 +103,13 @@ class ApiTokenController extends Controller
         $user->biography = $request->get('biography');
 
         if ($request->has('img')) {
-            $result = $request->img->storeOnCloudinary();
-            cloudinary()->destroy($user->img_id);
-            $user->img_id = $result->getPublicId();
-            $user->img_url = $result->getSecurePath();
+
+            $uploadedFileUrl = Cloudinary::upload($request->img->getRealPath())->getSecurePath();
+            $user->img_url = $uploadedFileUrl;
         }
 
+
         $user->fill($request->all());
-        $user->save();
 
         if (strlen($request->get('password', '')) > 0) {
             $user->password = Hash::make($request->get('password'));
