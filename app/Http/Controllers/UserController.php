@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Requests\UserEditRequest;
 
 
-class ApiTokenController extends Controller
+class UserController extends Controller
 {
     public function register(Request $request)
     {
@@ -23,7 +23,7 @@ class ApiTokenController extends Controller
         $exists = User::where('email', $request->email)->exists();
 
         if ($exists) {
-            return response()->json(["error" => "You are already registered. Please login instead."], 409);
+            return response()->json(["message" => "Tu as déjà un compte. Merci de te connecter."], 409);
         }
 
         $user = User::create([
@@ -56,7 +56,7 @@ class ApiTokenController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                "error" => "he provided credentials are incorrect."
+                "error" => "Les identifiants ne sont pas corrects"
             ], 401);
         }
 
@@ -64,13 +64,19 @@ class ApiTokenController extends Controller
 
         $token = $user->createToken("kodiweb")->plainTextToken;
 
-        return response()->json([
+        $user = [
             "token" => $token,
             "first_name" => $user->first_name,
             "last_name" => $user->last_name,
             "email" => $user->email,
             "created_at" => $user->created_at
+        ]; 
+
+        return response()->json([
+            'user' => $user,
+            "message" => "Tu es maintenant connecté"
         ], 200);
+
     }
 
     public function me(Request $request)
@@ -119,7 +125,7 @@ class ApiTokenController extends Controller
 
         return response()->json([
             'user' => $user,
-            "message" => "Profil mis à jour"
+            "message" => "Ton profil a été mis à jour"
         ], 200);
     }
     public function logout(Request $request)
