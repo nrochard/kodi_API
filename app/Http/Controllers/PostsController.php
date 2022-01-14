@@ -22,7 +22,7 @@ class PostsController extends Controller
 
     public function index()
     {
-        $posts = Post::get()->all();
+        $posts = Post::orderBy('created_at', 'desc')->get()->all();
 
         $arrayPosts = [];
         foreach ($posts as $post) {
