@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Comment;
 use App\Models\Like;
 
 class LikesController extends Controller
@@ -17,7 +16,7 @@ class LikesController extends Controller
             $user_id = auth()->user()->id;
         }
 
-        $like = Like::insert([
+        Like::insert([
             'user_id' => $user_id,
             'post_id' => $id,
         ]);
