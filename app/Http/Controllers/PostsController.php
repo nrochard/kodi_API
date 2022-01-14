@@ -48,30 +48,6 @@ class PostsController extends Controller
             ]);
         }
         return response()->json($arrayPosts, 200);
-        // "id" => $posts['id'], // post id
-        // "author" => [
-        //     "id" => $users['id'], // user id
-        //     "firstName" => $users['first_name'],
-        //     "lastName" => $users['last_name'],
-        //     "img" => $users['id'],
-        // ],
-        // "message" => $posts['body'],
-        // "likes" => ["id" => $request->like_id],
-        // "comments" => [
-        //     "id" => $request->comment_id, // comment id
-        //     "message" => $request->body,
-        //     "likes" => [
-        //         "id" => $request, // user id
-        //     ],
-        //     "author" => [
-        //         "id" => $request,
-        //         "firstName" => $request,
-        //         "lastName" => $request,
-        //         "avatar" => $request,
-        //     ],
-        //     "createdAt" => new Date(),
-        // ],
-
     }
 
     public function create(Request $request)
