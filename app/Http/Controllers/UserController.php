@@ -71,18 +71,18 @@ class UserController extends Controller
             "last_name" => $user->last_name,
             "email" => $user->email,
             "created_at" => $user->created_at
-        ]; 
+        ];
 
         return response()->json([
             'user' => $user,
             "message" => "Tu es maintenant connecté"
         ], 200);
-
     }
 
     public function me(Request $request)
     {
         return response()->json([
+            "user_id" => $request->user()->id,
             "first_name" => $request->user()->first_name,
             "last_name" => $request->user()->last_name,
             "email" => $request->user()->email,
@@ -90,6 +90,22 @@ class UserController extends Controller
             "updated_at" => $request->user()->updated_at,
         ], 200);
     }
+
+    public function userInfo(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+        if ($user->id != $request->user()->id) {
+            return response()->json(["message" => 'Forbidden'], 403);
+        }
+        return response()->json([
+            $user
+
+        ], 200);
+    }
+
 
     public function update($id, Request $request)
     {

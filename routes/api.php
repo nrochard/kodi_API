@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\LikesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,9 +23,16 @@ use App\Http\Controllers\UserController;
 
 
 Route::middleware('auth:sanctum')->post('auth/post', [PostsController::class, 'create']);
+Route::middleware('auth:sanctum')->post('auth/post/comment/{id}', [CommentsController::class, 'create']);
+
+Route::middleware('auth:sanctum')->post('auth/post/like/post/{id}', [LikesController::class, 'likePost']);
+Route::middleware('auth:sanctum')->post('auth/post/like/comment/{id}', [LikesController::class, 'likeComment']);
+
 
 Route::post('auth/register', [UserController::class, 'register']);
 Route::post('auth/login', [UserController::class, 'login']);
-Route::middleware('auth:sanctum')->put('auth/update/{id}', [UserController::class, 'update']);
+
+Route::middleware('auth:sanctum')->post('auth/update/{id}', [UserController::class, 'update']);
 Route::middleware('auth:sanctum')->post('auth/me', [UserController::class, 'me']);
+Route::middleware('auth:sanctum')->get('auth/user/{id}', [UserController::class, 'userInfo']);
 Route::middleware('auth:sanctum')->post('auth/logout', [UserController::class, 'logout']);

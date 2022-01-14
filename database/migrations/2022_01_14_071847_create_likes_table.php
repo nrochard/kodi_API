@@ -17,7 +17,7 @@ class CreateLikesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('post_id');
-            $table->foreignId('comment_id');
+            $table->foreignId('comment_id')->nullable();
             $table->foreignId('user_id');
         });
     }

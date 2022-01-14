@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Models\Like;
 
 class PostsController extends Controller
 {
