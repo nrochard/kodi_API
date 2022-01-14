@@ -86,7 +86,7 @@ class UserController extends Controller
             "first_name" => $request->user()->first_name,
             "last_name" => $request->user()->last_name,
             "email" => $request->user()->email,
-            "biograpgy" => $request->user()->biography,
+            "biography" => $request->user()->biography,
             "img_url" => $request->user()->img_url,
             "created_at" => $request->user()->created_at,
             "updated_at" => $request->user()->updated_at,
