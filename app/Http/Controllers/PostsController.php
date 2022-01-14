@@ -32,7 +32,7 @@ class PostsController extends Controller
 
             $arrayComments = [];
             foreach ($comments as $comment) {
-                $commentInfo = Post::where('user_id', $comment->user_id)->first();
+                $commentInfo = User::where('id', $comment->user_id)->first();
                 $likesComment = Like::where('comment_id', $comment->id)->get();
 
                 array_push($arrayComments, [
