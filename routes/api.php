@@ -22,7 +22,7 @@ use App\Http\Controllers\LikesController;
 // });
 
 Route::middleware('auth:sanctum')->get('auth/posts', [PostsController::class, 'index']);
-// Route::middleware('auth:sanctum')->get('auth/post', [PostsController::class, 'show']);
+Route::middleware('auth:sanctum')->get('auth/post', [PostsController::class, 'show']);
 Route::middleware('auth:sanctum')->post('auth/post', [PostsController::class, 'create']);
 Route::middleware('auth:sanctum')->post('auth/post/comment/{id}', [CommentsController::class, 'create']);
 Route::middleware('auth:sanctum')->delete('auth/post/delete/{id}', [PostsController::class, 'delete']);
