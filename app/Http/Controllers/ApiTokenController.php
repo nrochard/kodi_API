@@ -117,6 +117,7 @@ class ApiTokenController extends Controller
 
         $user->save();
 
+
         return response()->json([
             'user' => $user,
             "message" => "Profil mis à jour"
