@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Like;
 use App\Models\Post;
+use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Models\Comment;
 
@@ -25,7 +26,7 @@ class PostsController extends Controller
 
         $arrayPosts = [];
         foreach ($posts as $post) {
-            $userInfo = Post::where('user_id', $post->user_id)->first();
+            $userInfo = User::where('id', $post->user_id)->first();
             $likes = Like::where('post_id', $post->id)->get();
             $comments = Comment::where('post_id', $post->id)->get();
 
