@@ -124,8 +124,6 @@ class PostsController extends Controller
     public function delete(Request $request, $id)
     {
         $user_id = $request->user()->id;
-        $post = Post::with("user")
-            ->where('user_id', $user_id)->delete();
 
         $post = Post::where('user_id', '=', $user_id)->where('id', '=', $id)->delete();
 
