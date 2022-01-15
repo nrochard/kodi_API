@@ -16,10 +16,23 @@ class LikesController extends Controller
             $user_id = auth()->user()->id;
         }
 
-        Like::insert([
-            'user_id' => $user_id,
-            'post_id' => $id,
-        ]);
+        $exists = Like::where(
+            ['user_id', '=', $user_id],
+            ['post_id', '=', $id],
+        )->exists();
+
+        if ($exists) {
+            Like::where(
+                ['user_id', '=', $user_id],
+                ['post_id', '=', $id],
+            )->delete();
+        } else {
+            Like::insert([
+                'user_id' => $user_id,
+                'post_id' => $id,
+            ]);
+        }
+
 
         return response()->json([
             'user_id' => $user_id,
