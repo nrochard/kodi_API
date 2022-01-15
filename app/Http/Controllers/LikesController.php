@@ -49,7 +49,6 @@ class LikesController extends Controller
         }
 
         $like = Like::where('user_id', '=', $user_id)
-            ->where('post_id', '=', $request->post_id)
             ->where('comment_id', '=', $id)
             ->first();
 
@@ -60,7 +59,6 @@ class LikesController extends Controller
         } else {
             Like::insert([
                 'user_id' => $user_id,
-                'post_id' => $request->post_id,
                 'comment_id' => $id,
             ]);
         }
@@ -70,7 +68,6 @@ class LikesController extends Controller
 
         return response()->json([
             'user_id' => $user_id,
-            'post_id' => $request->post_id,
             'comment_id' => $id,
         ], 201);
     }
