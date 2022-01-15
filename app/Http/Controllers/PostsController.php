@@ -127,6 +127,8 @@ class PostsController extends Controller
         $post = Post::with("user")
             ->where('user_id', $user_id)->delete();
 
+        $post = Post::where('user_id', '=', $user_id)->where('id', '=', $id)->delete();
+
         if (!$post) {
             return response()->json(['message' => 'Not found'], 404);
         }
