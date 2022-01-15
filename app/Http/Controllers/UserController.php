@@ -99,12 +99,8 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Not found'], 404);
         }
-        if ($user->id != $request->user()->id) {
-            return response()->json(["message" => 'Forbidden'], 403);
-        }
         return response()->json([
             $user
-
         ], 200);
     }
 

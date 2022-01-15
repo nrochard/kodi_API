@@ -16,16 +16,14 @@ class LikesController extends Controller
             $user_id = auth()->user()->id;
         }
 
-        $exists = Like::where(
-            ['user_id', '=', $user_id],
-            ['post_id', '=', $id],
-        )->exists();
+        $like = Like::where('user_id', '=', $user_id)
+            ->where('post_id', '=', $id)
+            ->first();
 
-        if ($exists) {
-            Like::where(
-                ['user_id', '=', $user_id],
-                ['post_id', '=', $id],
-            )->delete();
+
+
+        if (isset($like)) {
+            $like->delete();
         } else {
             Like::insert([
                 'user_id' => $user_id,
