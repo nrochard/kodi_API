@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-            $table->string('body');
+            $table->longText('body');
             $table->string('img');
             $table->foreignId('user_id')
                 ->constrained()
