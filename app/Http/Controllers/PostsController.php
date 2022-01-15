@@ -82,6 +82,44 @@ class PostsController extends Controller
         ], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'body' => 'required|string',
+        ]);
+
+        $post = Post::find($id);
+
+        $data = $request->json()->all();
+        if (env('APP_ENV') == 'testing') {
+            $user_id = $data['user_id'];
+        } else {
+            $user_id = auth()->user()->id;
+        }
+
+        if (!$post) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
+        if ($post->user_id != $request->user()->id) {
+            return response()->json(["message" => 'Forbidden'], 403);
+        }
+
+        $post->body = $request->get('body');
+
+        if ($request->has('img')) {
+            $uploadedFileUrl = Cloudinary::upload($request->img->getRealPath())->getSecurePath();
+            $post->img = $uploadedFileUrl;
+        }
+
+        $post->save();
+
+        return response()->json([
+            "post" => $request->body,
+            "message" => "Votre post a bien été modifié"
+        ], 201);
+    }
+
 
     public function delete(Request $request, $id)
     {
