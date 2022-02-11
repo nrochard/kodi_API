@@ -27,13 +27,15 @@ class PostsController extends Controller
         $arrayPosts = [];
         foreach ($posts as $post) {
             $userInfo = User::where('id', $post->user_id)->first();
-            $likes = Like::where('post_id', $post->id)->get();
+
+            $likes = $post->likes;
+
             $comments = Comment::where('post_id', $post->id)->get();
 
             $arrayComments = [];
             foreach ($comments as $comment) {
                 $commentInfo = User::where('id', $comment->user_id)->first();
-                $likesComment = Like::where('comment_id', $comment->id)->get();
+                $likesComment = $comment->likes;
 
                 array_push($arrayComments, [
                     "author" => $commentInfo,

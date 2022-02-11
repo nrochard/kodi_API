@@ -17,8 +17,7 @@ class CreateLikesTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-            $table->foreignId('post_id')->nullable();
-            $table->foreignId('comment_id')->nullable();
+            $table->morphs('likeable');
             $table->foreignId('user_id');
         });
     }

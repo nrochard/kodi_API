@@ -28,8 +28,8 @@ Route::middleware('auth:sanctum')->post('auth/post/{id}', [PostsController::clas
 Route::middleware('auth:sanctum')->post('auth/post/comment/{id}', [CommentsController::class, 'create']);
 Route::middleware('auth:sanctum')->delete('auth/post/delete/{id}', [PostsController::class, 'delete']);
 
-Route::middleware('auth:sanctum')->post('auth/post/like/post/{id}', [LikesController::class, 'likePost']);
-Route::middleware('auth:sanctum')->post('auth/post/like/comment/{id}', [LikesController::class, 'likeComment']);
+Route::middleware('auth:sanctum')->post('auth/post/like/post/{post}', [LikesController::class, 'likePost']);
+Route::middleware('auth:sanctum')->post('auth/post/like/comment/{comment}', [LikesController::class, 'likeComment']);
 
 
 Route::post('auth/register', [UserController::class, 'register']);

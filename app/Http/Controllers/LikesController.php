@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Like;
+use App\Models\Post;
 
 class LikesController extends Controller
 {
-    public function likePost(Request $request, $id)
+    public function likePost(Request $request, Post $post)
     {
+
         $data = $request->json()->all();
         if (env('APP_ENV') == 'testing') {
             $user_id = $data['user_id'];
@@ -16,30 +19,24 @@ class LikesController extends Controller
             $user_id = auth()->user()->id;
         }
 
-        $like = Like::where('user_id', '=', $user_id)
-            ->where('post_id', '=', $id)
-            ->first();
 
-
-
-        if (isset($like)) {
-            $like->delete();
+        if ($post->likes->where('user_id', $request->user()->id)->count()) {
+            $post->likes()->where('user_id', $request->user()->id)->delete();
         } else {
-            Like::insert([
-                'user_id' => $user_id,
-                'post_id' => $id,
+            $post->likes()->create([
+                'user_id' => $request->user()->id,
             ]);
         }
 
 
         return response()->json([
             'user_id' => $user_id,
-            'post_id' => $id,
+            'post_id' => $post->id,
         ], 201);
     }
 
 
-    public function likeComment(Request $request, $id)
+    public function likeComment(Request $request, Comment $comment)
     {
         $data = $request->json()->all();
         if (env('APP_ENV') == 'testing') {
@@ -48,27 +45,18 @@ class LikesController extends Controller
             $user_id = auth()->user()->id;
         }
 
-        $like = Like::where('user_id', '=', $user_id)
-            ->where('comment_id', '=', $id)
-            ->first();
-
-
-
-        if (isset($like)) {
-            $like->delete();
+        if ($comment->likes->where('user_id', $request->user()->id)->count()) {
+            $comment->likes()->where('user_id', $request->user()->id)->delete();
         } else {
-            Like::insert([
-                'user_id' => $user_id,
-                'comment_id' => $id,
+            $comment->likes()->create([
+                'user_id' => $request->user()->id,
             ]);
         }
 
 
-
-
         return response()->json([
             'user_id' => $user_id,
-            'comment_id' => $id,
+            'comment_id' => $comment->id,
         ], 201);
     }
 }
